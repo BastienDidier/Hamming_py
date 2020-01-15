@@ -5,6 +5,7 @@ def decodeSequenceHammling(sequence,matriceG,l,tabAllEncoded,dicWord):
     tailleword=2**l-1
     tabSquence=[]
     mot = []
+#on separe la sequence de hamming en mot de taille 2^l-1
     for number in sequence:
        if tailleword==0:
            tabSquence.append(mot)
@@ -13,14 +14,14 @@ def decodeSequenceHammling(sequence,matriceG,l,tabAllEncoded,dicWord):
        else:
            mot.append(number)
            tailleword=tailleword-1
-
+#on affiche la sequence decoder mot par mot
     print("Décodage de la sequence (1 mot par ligne)")
     print(sequence)
     for word in tabSquence:
         print(decodeCode(word,tabAllEncoded,dicWord))
 
 
-
+#decode un mot selectionnant le mot ayant la difference minimale entre les mots encodés et le mot a decoder
 def decodeCode(modifyedcode,tabAllEncoded,dicWord):
     tabDif=[]
     index=0
@@ -34,13 +35,11 @@ def diff2Code(code1,code2):
     index=0
     for nb in code1:
         if(nb!=code2[index]):
-            #print("diff here for index "+str(index)+" comparaison "+str(nb)+"  ;  "+str(code2[index]))
             nbDif+=1
         index+=1
     return nbDif
 
 def encodeAll(tab_all_possible_word,matriceG):
-
     dic={}
     tabEncoded=[]
     index=0
@@ -50,30 +49,27 @@ def encodeAll(tab_all_possible_word,matriceG):
         index=index+1
     result=[tabEncoded,dic]
     return  result
+#modifie un bit random dans le mot encoder
 def bruitage(encodedWord):
     modifyedWord=copy.deepcopy(encodedWord)
-    #print("begin bruitage")
     base2 = lambda x:x%2
     nb=random.randint(0,len(encodedWord)-1)
     if modifyedWord[nb]%2 == 0:
         modifyedWord[nb] = 1
     else:
         modifyedWord[nb] = 0
-    #print(modifyedWord)
     return modifyedWord
 
 
 def encode(toEncode,matriceG):
-    #print("encoded word")
     #matrice multiplication
     resultNonBinary=[[sum(a*b for a,b in zip(X_row,Y_col)) for Y_col in zip(*matriceG)] for X_row in toEncode]
     resultNonBinary = resultNonBinary[0]
     base2 = lambda x: x%2
     #set the result in base 2
     resultBinary = list(map(base2,resultNonBinary))
-    #print(resultBinary)
     return resultBinary
-
+#genere une matrice identité de taille n
 def identity(n):
     m=[[0 for x in range(n)] for y in range(n)]
     for i in range(0,n):
@@ -89,7 +85,7 @@ def per(n):
         tabCol.append(list(map(int,list(s))))
     return tabCol
 
-
+#genere la matrice h pour un l donner
 def getMatriceH(l):
     tabLines   = []
     tabColones = per(l)
@@ -117,7 +113,7 @@ def getMatriceH(l):
         index=index+1
     objectReturn=[tabLines,tabColonnesWithoutIdentity,identityMatrix]
     return objectReturn
-
+#genere une matrice G d'apres une matrice H
 def getMatriceG(matriceH):
     nbLine=len(matriceH[1])
     matriceG=identity(nbLine)
@@ -126,7 +122,7 @@ def getMatriceG(matriceH):
         matriceG[index] = matriceG[index]+col
         index = index+1
     return  matriceG
-
+#Main programme
 saisie = False
 while(saisie == False):
     try:
