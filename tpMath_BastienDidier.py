@@ -138,10 +138,13 @@ while(saisie == False):
     except ValueError:
         print("error")
 
+print("display matrice H")
 obj_return = getMatriceH(l)
+print(obj_return[0])
 matriceH=obj_return[0]
 matriceG=getMatriceG(obj_return)
-
+print("display matrice G")
+print(matriceG)
 toEncode=[[1,0,1,1]]
 encodedWord=encode(toEncode,matriceG)
 modifyedWord=bruitage(encodedWord)
